@@ -1,0 +1,474 @@
+Joseph Stein
+
+SQL queries to create tables and populate them with data.
+
+CREATE TABLE DRIVER(DRIVER_ID INT NOT NULL, FIRST_NAME VARCHAR (20) NOT NULL, LAST_NAME VARCHAR (20) NOT NULL, RATING INT, PHONE_NUMBER INT, EMAIL_ADDRESS VARCHAR (20), START_LOCATION VARCHAR (20), PRIMARY KEY (DRIVER_ID));
+CREATE TABLE RIDER(RIDER_ID INT NOT NULL, FIRST_NAME VARCHAR (20) NOT NULL, LAST_NAME VARCHAR (20) NOT NULL, RATING INT, PHONE_NUMBER INT, EMAIL_ADDRESS VARCHAR (20), START_LOCATION VARCHAR (20));
+CREATE TABLE RIDE_TRANSACTION(TRANSACTION_ID INT NOT NULL, T_DATE DATE, T_TIME TIME, AMOUNT_PAID DECIMAL (18,2), START_LOCATION VARCHAR (20), END_LOCATION VARCHAR (20), RIDER_ID INT NOT NULL, DRIVER_ID INT NOT NULL,PRIMARY KEY (RIDER_ID,DRIVER_ID,TRANSACTION_ID), FOREIGN KEY (RIDER_ID) REFERENCES RIDER(RIDER_ID), FOREIGN KEY (DRIVER_ID) REFERENCES DRIVER(DRIVER_ID));
+CREATE TABLE TIME_SLOT(TIME_SLOT_ID INT NOT NULL, DAYS VARCHAR (20), START_TIME TIME, END_TIME TIME, PRIMARY KEY (TIME_SLOT_ID));
+CREATE TABLE CATEGORIES(CATEGORY VARCHAR (20) NOT NULL, PRICE_RATE DECIMAL (18,2), PRIMARY KEY (CATEGORY));
+CREATE TABLE SCHEDULE_RIDE(SCHEDULE_ID INT NOT NULL, S_DATE DATE, S_TIME TIME, START_LOCATION VARCHAR (20), RIDER_ID INT NOT NULL, DRIVER_ID INT NOT NULL, PRIMARY KEY (RIDER_ID, DRIVER_ID, SCHEDULE_ID), FOREIGN KEY (RIDER_ID) REFERENCES RIDER(RIDER_ID), FOREIGN KEY (DRIVER_ID) REFERENCES DRIVER(DRIVER_ID));
+CREATE TABLE FAVORITE_DESTINATION(DESTINATION_ID INT NOT NULL, END_LOCATION VARCHAR (20), PRIMARY KEY (DESTINATION_ID));
+CREATE TABLE DRIVER_CATEGORY(DRIVER_ID INT NOT NULL, CATEGORY VARCHAR (20) NOT NULL, PRIMARY KEY (DRIVER_ID, CATEGORY), FOREIGN KEY (DRIVER_ID) REFERENCES DRIVER(DRIVER_ID), FOREIGN KEY (CATEGORY) REFERENCES CATEGORIES(CATEGORY));
+CREATE TABLE DRIVER_TIME_SLOT(DRIVER_ID INT NOT NULL, TIME_SLOT_ID INT NOT NULL, PRIMARY KEY (DRIVER_ID, TIME_SLOT_ID), FOREIGN KEY (DRIVER_ID) REFERENCES DRIVER(DRIVER_ID), FOREIGN KEY (TIME_SLOT_ID) REFERENCES TIME_SLOT(TIME_SLOT_ID));
+CREATE TABLE RIDER_FAV_DESTINATION(RIDER_ID INT NOT NULL, DESTINATION_ID INT NOT NULL, PRIMARY KEY (RIDER_ID, DESTINATION_ID), FOREIGN KEY (RIDER_ID) REFERENCES RIDER(RIDER_ID), FOREIGN KEY (DESTINATION_ID) REFERENCES FAVORITE_DESTINATION(DESTINATION_ID));
+INSERT INTO categories (CATEGORY, PRICE_RATE) VALUES ('Economy', 7.00);
+INSERT INTO categories (CATEGORY, PRICE_RATE) VALUES ('Premium', 15.00);
+INSERT INTO categories (CATEGORY, PRICE_RATE) VALUES ('Accessibility', 12.00);
+INSERT INTO categories (CATEGORY, PRICE_RATE) VALUES ('Carpool', 10.00);
+INSERT INTO driver (DRIVER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (1, 'Joe', 'S', 5, 5555555, 'joe@website.com', 'L Street');
+INSERT INTO driver (DRIVER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (2, 'Bob', 'S', 5, 6665555, 'bob@website.com', 'L Street');
+INSERT INTO driver (DRIVER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (3, 'Mike', 'R', 4, 7775555, 'mike@google.com', 'Q Street');
+INSERT INTO driver (DRIVER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (4, 'Steve', 'L', 3, 8885555, 'steve@website.com', 'A Street');
+INSERT INTO driver (DRIVER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (5, 'Lucy', 'Y', 5, 9995555, 'lucy@google.com', 'A Street');
+INSERT INTO driver (DRIVER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (6, 'Jon', 'T', 5, 4445555, 'jon@website.com', 'O Street');
+INSERT INTO driver (DRIVER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (7, 'Susie', 'Q', 1, 3335555, 'sq@website.com', 'Q Street');
+INSERT INTO driver (DRIVER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (8, 'Smith', 'W', 5, 2225555, 'sm@yahoo.com', 'R Street');
+INSERT INTO driver (DRIVER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (9, 'Angie', 'A', 5, 1115555, 'AA@website.com', 'T Street');
+INSERT INTO driver (DRIVER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (10, 'Jimmy', 'S', 5, 5556666, 'jim@website.com', 'I Street');
+INSERT INTO driver_category (DRIVER_ID, CATEGORY) VALUES (1, 'Economy');
+INSERT INTO driver_category (DRIVER_ID, CATEGORY) VALUES (2, 'Economy');
+INSERT INTO driver_category (DRIVER_ID, CATEGORY) VALUES (3, 'Economy');
+INSERT INTO driver_category (DRIVER_ID, CATEGORY) VALUES (4, 'Premium');
+INSERT INTO driver_category (DRIVER_ID, CATEGORY) VALUES (5, 'Premium');
+INSERT INTO driver_category (DRIVER_ID, CATEGORY) VALUES (6, 'Premium');
+INSERT INTO driver_category (DRIVER_ID, CATEGORY) VALUES (7, 'Accessibility');
+INSERT INTO driver_category (DRIVER_ID, CATEGORY) VALUES (8, 'Accessibility');
+INSERT INTO driver_category (DRIVER_ID, CATEGORY) VALUES (9, 'Carpool');
+INSERT INTO driver_category (DRIVER_ID, CATEGORY) VALUES (10, 'Carpool');
+INSERT INTO time_slot (TIME_SLOT_ID, DAYS, START_TIME, END_TIME) VALUES (1, 'Week days', '08:00', '16:00');
+INSERT INTO time_slot (TIME_SLOT_ID, DAYS, START_TIME, END_TIME) VALUES (2, 'Weekends', '09:00', '17:00');
+INSERT INTO time_slot (TIME_SLOT_ID, DAYS, START_TIME, END_TIME) VALUES (3, 'Weekends', '10:00', '18:00');
+INSERT INTO time_slot (TIME_SLOT_ID, DAYS, START_TIME, END_TIME) VALUES (4, 'Week days', '11:00', '19:00');
+INSERT INTO time_slot (TIME_SLOT_ID, DAYS, START_TIME, END_TIME) VALUES (5, 'Week days/weekends', '12:00', '20:00');
+INSERT INTO driver_time_slot (DRIVER_ID, TIME_SLOT_ID) VALUES (1,1);
+INSERT INTO driver_time_slot (DRIVER_ID, TIME_SLOT_ID) VALUES (2,1);
+INSERT INTO driver_time_slot (DRIVER_ID, TIME_SLOT_ID) VALUES (3,2);
+INSERT INTO driver_time_slot (DRIVER_ID, TIME_SLOT_ID) VALUES (4,2);
+INSERT INTO driver_time_slot (DRIVER_ID, TIME_SLOT_ID) VALUES (5,3);
+INSERT INTO driver_time_slot (DRIVER_ID, TIME_SLOT_ID) VALUES (6,3);
+INSERT INTO driver_time_slot (DRIVER_ID, TIME_SLOT_ID) VALUES (7,4);
+INSERT INTO driver_time_slot (DRIVER_ID, TIME_SLOT_ID) VALUES (8,4);
+INSERT INTO driver_time_slot (DRIVER_ID, TIME_SLOT_ID) VALUES (9,5);
+INSERT INTO driver_time_slot (DRIVER_ID, TIME_SLOT_ID) VALUES (10,5);
+INSERT INTO rider (RIDER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (1, 'Bill', 'M', 3, 1234567, 'bill@website.com', 'L Street');
+INSERT INTO rider (RIDER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (2, 'Bart', 'S', 2, 1234568, 'bart@website.com', 'S Street');
+INSERT INTO rider (RIDER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (3, 'Sam', 'F', 3, 1234569, 'sf@website.com', 'C Street');
+INSERT INTO rider (RIDER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (4, 'Maggie', 'S', 5, 1234566, 'mag@google.com', 'H Street');
+INSERT INTO rider (RIDER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (5, 'Sammy', 'E', 1, 1234565, 'se@yahoo.com', 'G Street');
+INSERT INTO rider (RIDER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (6, 'Ty', 'Y', 5, 1234564, 'ty@website.com', 'L Street');
+INSERT INTO rider (RIDER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (7, 'Bert', 'B', 4, 1234563, 'bb@website.com', 'N Street');
+INSERT INTO rider (RIDER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (8, 'Lucile', 'B', 3, 1234562, 'LC@website.com', 'I Street');
+INSERT INTO rider (RIDER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (9, 'Greg', 'K', 3, 1234561, 'greg@website.com', 'G Street');
+INSERT INTO rider (RIDER_ID, FIRST_NAME, LAST_NAME, RATING, PHONE_NUMBER, EMAIL_ADDRESS, START_LOCATION) VALUES (10, 'Jimmy', 'N', 5, 1234560, 'j@yahoo.com', 'J Street');
+INSERT INTO favorite_destination (DESTINATION_ID, END_LOCATION) VALUES (1, 'S Street');
+INSERT INTO favorite_destination (DESTINATION_ID, END_LOCATION) VALUES (2, 'R Street');
+INSERT INTO favorite_destination (DESTINATION_ID, END_LOCATION) VALUES (3, 'Q Street');
+INSERT INTO favorite_destination (DESTINATION_ID, END_LOCATION) VALUES (4, 'W Street');
+INSERT INTO favorite_destination (DESTINATION_ID, END_LOCATION) VALUES (5, 'J Street');
+INSERT INTO favorite_destination (DESTINATION_ID, END_LOCATION) VALUES (6, 'L Street');
+INSERT INTO rider_fav_destination (RIDER_ID, DESTINATION_ID) VALUES (1,1);
+INSERT INTO rider_fav_destination (RIDER_ID, DESTINATION_ID) VALUES (1,2);
+INSERT INTO rider_fav_destination (RIDER_ID, DESTINATION_ID) VALUES (1,3);
+INSERT INTO rider_fav_destination (RIDER_ID, DESTINATION_ID) VALUES (2,1);
+INSERT INTO rider_fav_destination (RIDER_ID, DESTINATION_ID) VALUES (2,4);
+INSERT INTO rider_fav_destination (RIDER_ID, DESTINATION_ID) VALUES (4,5);
+INSERT INTO rider_fav_destination (RIDER_ID, DESTINATION_ID) VALUES (5,5);
+INSERT INTO rider_fav_destination (RIDER_ID, DESTINATION_ID) VALUES (6,6);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (1, '2016-01-20', '10:00', 20.50, 'T Street', 'R Street', 1, 10);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (2, '2016-01-20', '12:00', 20.50, 'R Street', 'T Street', 1, 9);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (3, '2016-01-25', '11:00', 10.50, 'U Street', 'S Street', 1, 8);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (4, '2016-02-02', '13:00', 15.55, 'G Street', 'G Street', 2, 1);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (5, '2016-02-21', '15:00', 30.50, 'Q Street', 'Z Street', 3, 5);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (6, '2016-02-22', '16:00', 8.95, 'M Street', 'N Street', 3, 10);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (7, '2016-03-10', '9:00', 23.23, 'A Street', 'F Street', 4, 2);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (8, '2016-03-10', '9:00', 10.50, 'B Street', 'N Street', 3, 3);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (9, '2016-03-10', '17:00', 17.80, 'Y Street', 'B Street', 4, 3);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (10, '2016-05-03', '20:00', 30.50, 'Z Street', 'A Street', 5, 7);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (11, '2016-06-20', '11:00', 13.14, 'G Street', 'H Street', 5, 8);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (12, '2016-06-20', '12:00', 17.50, 'I Street', 'O Street', 6, 2);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (13, '2016-07-01', '24:00', 24.50, 'J Street', 'K Street', 7, 1);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (14, '2016-08-27', '20:00', 5.50, 'A Street', 'B Street', 7, 1);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (15, '2016-09-10', '14:00', 15.50, 'Y Street', 'U Street', 8, 6);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (16, '2017-01-01', '10:00', 20.50, 'T Street', 'W Street', 2, 4);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (17, '2017-01-20', '20:00', 40.50, 'F Street', 'J Street', 5, 5);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (18, '2017-01-20', '10:00', 20.50, 'G Street', 'H Street', 9, 9);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (19, '2017-02-10', '16:00', 26.60, 'F Street', 'D Street', 10, 10);
+INSERT INTO ride_transaction (TRANSACTION_ID, T_DATE, T_TIME, AMOUNT_PAID, START_LOCATION, END_LOCATION, RIDER_ID, DRIVER_ID) VALUES (20, '2017-03-04', '14:30', 23.52, 'B Street', 'D Street', 10, 8);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (1, '2017-04-01', '12:00', 'T Street', 1, 5);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (2, '2017-04-01', '18:00', 'M Street', 1, 6);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (3, '2017-04-02', '12:00', 'J Street', 2, 7);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (4, '2017-04-03', '12:00', 'Y Street', 3, 1);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (5, '2017-04-04', '16:00', 'F Street', 5, 10);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (6, '2017-04-05', '11:00', 'G Street', 6, 6);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (7, '2017-04-06', '13:00', 'K Street', 9, 4);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (8, '2017-04-06', '17:00', 'I Street', 10, 4);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (9, '2017-04-07', '14:00', 'T Street', 1, 2);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (10, '2017-04-08', '9:00', 'N Street', 7, 7);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (11, '2017-04-09', '20:00', 'H Street', 6, 9);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (12, '2017-04-09', '20:00', 'H Street', 5, 10);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (13, '2017-04-10', '13:00', 'G Street', 3, 4);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (14, '2017-04-11', '12:00', 'S Street', 8, 1);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (15, '2017-04-12', '9:00', '1ST Street', 9, 2);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (16, '2017-04-13', '19:00', 'F Street', 3, 5);
+INSERT INTO schedule_ride (SCHEDULE_ID, S_DATE, S_TIME, START_LOCATION, RIDER_ID, DRIVER_ID) VALUES (17, '2017-04-13', '24:00', 'H Street', 8, 7);
+
+Queries:
+
+Query 1:
+Get the driver name, date, and amount paid for each transaction.
+
+SELECT driver.first_name, ride_transaction.t_date, ride_transaction.amount_paid FROM driver INNER JOIN ride_transaction ON driver.driver_ID = ride_transaction.driver_ID;
+
+first_name	t_date	amount_paid	
+Jimmy	2016-01-20	20.50	
+Angie	2016-01-20	20.50	
+Smith	2016-01-25	10.50	
+Joe	2016-02-02	15.55	
+Lucy	2016-02-21	30.50	
+Jimmy	2016-02-22	8.95	
+Bob	2016-03-10	23.23	
+Mike	2016-03-10	10.50	
+Mike	2016-03-10	17.80	
+Susie	2016-05-03	30.50	
+Smith	2016-06-20	13.14	
+Bob	2016-06-20	17.50	
+Joe	2016-07-01	24.50	
+Joe	2016-08-27	5.50	
+Jon	2016-09-10	15.50	
+Steve	2017-01-01	20.50	
+Lucy	2017-01-20	40.50	
+Angie	2017-01-20	20.50	
+Jimmy	2017-02-10	26.60	
+Smith	2017-03-04	23.52	
+
+Query 2:
+Get the rider name, date, and amount paid for each transaction.
+
+SELECT rider.first_name, ride_transaction.t_date, ride_transaction.amount_paid FROM rider, ride_transaction WHERE rider.rider_ID = ride_transaction.driver_ID;
+
+first_name	t_date	amount_paid	
+Bill	2016-02-02	15.55	
+Bill	2016-07-01	24.50	
+Bill	2016-08-27	5.50	
+Bart	2016-03-10	23.23	
+Bart	2016-06-20	17.50	
+Sam	2016-03-10	10.50	
+Sam	2016-03-10	17.80	
+Maggie	2017-01-01	20.50	
+Sammy	2016-02-21	30.50	
+Sammy	2017-01-20	40.50	
+Ty	2016-09-10	15.50	
+Bert	2016-05-03	30.50	
+Lucile	2016-01-25	10.50	
+Lucile	2016-06-20	13.14	
+Lucile	2017-03-04	23.52	
+Greg	2016-01-20	20.50	
+Greg	2017-01-20	20.50	
+Jimmy	2016-01-20	20.50	
+Jimmy	2016-02-22	8.95	
+Jimmy	2017-02-10	26.60	
+
+Query 3:
+Get the rider name, start location, and end location for each transaction.
+
+SELECT rider.first_name, rider.last_name, ride_transaction.start_location, ride_transaction.end_location FROM rider LEFT JOIN ride_transaction ON rider.rider_ID = ride_transaction.rider_ID;
+
+first_name	last_name	start_location	end_location	
+Bill	M	U Street	S Street	
+Bill	M	R Street	T Street	
+Bill	M	T Street	R Street	
+Bart	S	G Street	G Street	
+Bart	S	T Street	W Street	
+Sam	F	B Street	N Street	
+Sam	F	Q Street	Z Street	
+Sam	F	M Street	N Street	
+Maggie	S	A Street	F Street	
+Maggie	S	Y Street	B Street	
+Sammy	E	F Street	J Street	
+Sammy	E	Z Street	A Street	
+Sammy	E	G Street	H Street	
+Ty	Y	I Street	O Street	
+Bert	B	J Street	K Street	
+Bert	B	A Street	B Street	
+Lucile	B	Y Street	U Street	
+Greg	K	G Street	H Street	
+Jimmy	N	B Street	D Street	
+Jimmy	N	F Street	D Street	
+
+Query 4:
+Get the driver name, start location, and end location for each transaction.
+
+SELECT driver.first_name, driver.last_name, ride_transaction.start_location, ride_transaction.end_location FROM driver RIGHT JOIN ride_transaction ON driver.driver_ID = ride_transaction.driver_ID;
+
+first_name	last_name	start_location	end_location	
+Jimmy	S	T Street	R Street	
+Angie	A	R Street	T Street	
+Smith	W	U Street	S Street	
+Joe	S	G Street	G Street	
+Lucy	Y	Q Street	Z Street	
+Jimmy	S	M Street	N Street	
+Bob	S	A Street	F Street	
+Mike	R	B Street	N Street	
+Mike	R	Y Street	B Street	
+Susie	Q	Z Street	A Street	
+Smith	W	G Street	H Street	
+Bob	S	I Street	O Street	
+Joe	S	J Street	K Street	
+Joe	S	A Street	B Street	
+Jon	T	Y Street	U Street	
+Steve	L	T Street	W Street	
+Lucy	Y	F Street	J Street	
+Angie	A	G Street	H Street	
+Jimmy	S	F Street	D Street	
+Smith	W	B Street	D Street	
+
+Query 5:
+Gets the first name of the dirver and rider for each transaction.
+
+SELECT ride_transaction.transaction_ID, driver.first_name AS "Driver Name", rider.first_name AS "Rider Name" FROM ride_transaction, driver, rider WHERE driver.driver_ID = ride_transaction.driver_ID and rider.rider_ID = ride_transaction.rider_ID;
+
+transaction_ID	Driver Name	Rider Name	
+3	Smith	Bill	
+2	Angie	Bill	
+1	Jimmy	Bill	
+4	Joe	Bart	
+16	Steve	Bart	
+8	Mike	Sam	
+5	Lucy	Sam	
+6	Jimmy	Sam	
+7	Bob	Maggie	
+9	Mike	Maggie	
+17	Lucy	Sammy	
+10	Susie	Sammy	
+11	Smith	Sammy	
+12	Bob	Ty	
+13	Joe	Bert	
+14	Joe	Bert	
+15	Jon	Lucile	
+18	Angie	Greg	
+20	Smith	Jimmy	
+19	Jimmy	Jimmy	
+
+Query 6:
+Get the name, category, and price rate for each driver.
+
+SELECT first_name, last_name, driver_category.category, price_rate FROM driver, driver_category, categories WHERE driver.driver_ID = driver_category.driver_ID AND driver_category.CATEGORY = categories.CATEGORY;
+
+first_name	last_name	category	price_rate	
+Joe	S	Economy	7.00	
+Bob	S	Economy	7.00	
+Mike	R	Economy	7.00	
+Steve	L	Premium	15.00	
+Lucy	Y	Premium	15.00	
+Jon	T	Premium	15.00	
+Susie	Q	Accessibility	12.00	
+Smith	W	Accessibility	12.00	
+Angie	A	Carpool	10.00	
+Jimmy	S	Carpool	10.00	
+
+Query 7:
+Get all the rider names that have a 'J' in them.
+
+SELECT first_name FROM driver WHERE first_name like '%J%';
+
+first_name	
+Joe	
+Jon	
+Jimmy
+
+Query 8:
+Find the amount of drivers in each category.
+
+SELECT category, count(driver_ID) FROM driver_category GROUP BY category;
+
+category	count(driver_ID)	
+Accessibility	2	
+Carpool	2	
+Economy	3	
+Premium	3	
+
+Query 9:
+Find the max amount paid on a transaction for each rider where the max is greater than $20.00;
+
+SELECT first_name, MAX(amount_paid) FROM rider, ride_transaction WHERE rider.rider_ID = ride_transaction.rider_ID GROUP BY first_name HAVING MAX(amount_paid) > 20.00;
+
+first_name	MAX(amount_paid)	
+Bart	20.50	
+Bert	24.50	
+Bill	20.50	
+Greg	20.50	
+Jimmy	26.60	
+Maggie	23.23	
+Sam	30.50	
+Sammy	40.50	
+
+Query 10:
+Get all of the transactions ordered by the amount paid.
+
+SELECT * FROM ride_transaction ORDER BY amount_paid;
+
+TRANSACTION_ID	T_DATE	T_TIME	AMOUNT_PAID	START_LOCATION	END_LOCATION	RIDER_ID	DRIVER_ID	
+14	2016-08-27	20:00:00	5.50	A Street	B Street	7	1	
+6	2016-02-22	16:00:00	8.95	M Street	N Street	3	10	
+3	2016-01-25	11:00:00	10.50	U Street	S Street	1	8	
+8	2016-03-10	09:00:00	10.50	B Street	N Street	3	3	
+11	2016-06-20	11:00:00	13.14	G Street	H Street	5	8	
+15	2016-09-10	14:00:00	15.50	Y Street	U Street	8	6	
+4	2016-02-02	13:00:00	15.55	G Street	G Street	2	1	
+12	2016-06-20	12:00:00	17.50	I Street	O Street	6	2	
+9	2016-03-10	17:00:00	17.80	Y Street	B Street	4	3	
+1	2016-01-20	10:00:00	20.50	T Street	R Street	1	10	
+2	2016-01-20	12:00:00	20.50	R Street	T Street	1	9	
+16	2017-01-01	10:00:00	20.50	T Street	W Street	2	4	
+18	2017-01-20	10:00:00	20.50	G Street	H Street	9	9	
+7	2016-03-10	09:00:00	23.23	A Street	F Street	4	2	
+20	2017-03-04	14:30:00	23.52	B Street	D Street	10	8	
+13	2016-07-01	24:00:00	24.50	J Street	K Street	7	1	
+19	2017-02-10	16:00:00	26.60	F Street	D Street	10	10	
+5	2016-02-21	15:00:00	30.50	Q Street	Z Street	3	5	
+10	2016-05-03	20:00:00	30.50	Z Street	A Street	5	7	
+17	2017-01-20	20:00:00	40.50	F Street	J Street	5	5	
+
+Query 11:
+Find scheduled rides that are at 12:00 or 20:00.
+
+(SELECT schedule_ID FROM schedule_ride WHERE s_time = '12:00') UNION (SELECT schedule_ID FROM schedule_ride WHERE s_time = '20:00');
+
+schedule_ID	
+1	
+3	
+4	
+14	
+11	
+12	
+
+Query 12:
+Find transactions that have a rider names 'Bert' and a driver named 'Joe'.
+
+SELECT transaction_ID FROM rider, ride_transaction WHERE rider.rider_ID = ride_transaction.rider_ID AND rider.first_name = 'Bert' AND transaction_ID IN (SELECT transaction_ID FROM driver, ride_transaction WHERE driver.driver_ID = ride_transaction.driver_ID AND driver.first_name = 'Joe');
+
+transaction_ID	
+13	
+14	
+
+Query 13:
+Find riders that have a favorite destination of 'S Street' but not 'R Street';
+
+SELECT rider_ID FROM rider_fav_destination, favorite_destination WHERE rider_fav_destination.destination_ID = favorite_destination.destination_ID AND favorite_destination.end_location = 'S Street' and rider_ID NOT IN (SELECT rider_ID FROM rider_fav_destination, favorite_destination WHERE rider_fav_destination.destination_ID = favorite_destination.destination_ID AND favorite_destination.end_location = 'R Street');
+
+rider_ID
+2	
+
+Query 14:
+Find the names of drivers who's start time is greater than that of some driver that works on week days only.
+
+SELECT DISTINCT first_name FROM driver, driver_time_slot, time_slot WHERE driver.driver_ID = driver_time_slot.driver_ID AND driver_time_slot.time_slot_ID = time_slot.time_slot_ID AND START_TIME > SOME (SELECT start_time FROM time_slot WHERE days = 'Week days');
+
+first_name	
+Mike	
+Steve	
+Lucy	
+Jon	
+Susie	
+Smith	
+Angie	
+Jimmy	
+
+Query 15:
+Find the names of drivers who's start time is greater than all drivers that work on week days only.
+
+SELECT DISTINCT first_name FROM driver, driver_time_slot, time_slot WHERE driver.driver_ID = driver_time_slot.driver_ID AND driver_time_slot.time_slot_ID = time_slot.time_slot_ID AND START_TIME > ALL (SELECT start_time FROM time_slot WHERE days = 'Week days');
+
+first_name	
+Angie	
+Jimmy	
+
+Query 16: 
+Get any rider that has scheduled rides with both driver 1 and driver 4.
+
+SELECT rider_ID FROM schedule_ride AS a where driver_ID = 1 AND EXISTS (SELECT * FROM schedule_ride AS b WHERE driver_ID = 4 AND a.rider_ID = b.rider_ID);
+
+rider_ID
+3	
+
+Query 17:
+Get any rider that has scheduled rides with driver 1, but not driver 4.
+
+SELECT rider_ID FROM schedule_ride AS a where driver_ID = 1 AND NOT EXISTS (SELECT * FROM schedule_ride AS b WHERE driver_ID = 4 AND a.rider_ID = b.rider_ID);
+
+rider_ID
+8	
+
+Query 18:
+Delete scheduled ride 17.
+
+DELETE FROM schedule_ride WHERE schedule_ID = 17;
+
+SCHEDULE_ID	S_DATE	S_TIME	START_LOCATION	RIDER_ID	DRIVER_ID	
+1	2017-04-01	12:00:00	T Street	1	5	
+2	2017-04-01	18:00:00	M Street	1	6	
+3	2017-04-02	12:00:00	J Street	2	7	
+4	2017-04-03	12:00:00	Y Street	3	1	
+5	2017-04-04	16:00:00	F Street	5	10	
+6	2017-04-05	11:00:00	G Street	6	6	
+7	2017-04-06	13:00:00	K Street	9	4	
+8	2017-04-06	17:00:00	I Street	10	4	
+9	2017-04-07	14:00:00	T Street	1	2	
+10	2017-04-08	09:00:00	N Street	7	7	
+11	2017-04-09	20:00:00	H Street	6	9	
+12	2017-04-09	20:00:00	H Street	5	10	
+13	2017-04-10	13:00:00	G Street	3	4	
+14	2017-04-11	12:00:00	S Street	8	1	
+15	2017-04-12	09:00:00	1ST Street	9	2	
+16	2017-04-13	19:00:00	F Street	3	5	
+
+
+Query 19:
+Update driver 3 to have a rating of 3.
+
+UPDATE driver SET rating = 3 WHERE driver_ID = 3;
+
+DRIVER_ID	FIRST_NAME	LAST_NAME	RATING	PHONE_NUMBER	EMAIL_ADDRESS	START_LOCATION	
+1	Joe	S	5	5555555	joe@website.com	L Street	
+2	Bob	S	5	6665555	bob@website.com	L Street	
+3	Mike	R	3	7775555	mike@google.com	Q Street	
+4	Steve	L	3	8885555	steve@website.com	A Street	
+5	Lucy	Y	5	9995555	lucy@google.com	A Street	
+6	Jon	T	5	4445555	jon@website.com	O Street	
+7	Susie	Q	1	3335555	sq@website.com	Q Street	
+8	Smith	W	5	2225555	sm@yahoo.com	R Street	
+9	Angie	A	5	1115555	AA@website.com	T Street	
+10	Jimmy	S	5	5556666	jim@website.com	I Street	
+
+
+Query 20:
+Insert driver 1 into the rider table as rider 11.
+
+INSERT INTO rider SELECT 11, first_name, last_name, rating, phone_number, email_address, start_location FROM driver WHERE driver_ID = 1;
+
+RIDER_ID	FIRST_NAME	LAST_NAME	RATING	PHONE_NUMBER	EMAIL_ADDRESS	START_LOCATION	
+1	Bill	M	3	1234567	bill@website.com	L Street	
+2	Bart	S	2	1234568	bart@website.com	S Street	
+3	Sam	F	3	1234569	sf@website.com	C Street	
+4	Maggie	S	5	1234566	mag@google.com	H Street	
+5	Sammy	E	1	1234565	se@yahoo.com	G Street	
+6	Ty	Y	5	1234564	ty@website.com	L Street	
+7	Bert	B	4	1234563	bb@website.com	N Street	
+8	Lucile	B	3	1234562	LC@website.com	I Street	
+9	Greg	K	3	1234561	greg@website.com	G Street	
+10	Jimmy	N	5	1234560	j@yahoo.com	J Street	
+11	Joe	S	5	5555555	joe@website.com	L Street	
+
+Oiginal SQL specification:
+
+CREATE TABLE DRIVER(DRIVER_ID INT NOT NULL, FIRST_NAME VARCHAR (20) NOT NULL, LAST_NAME VARCHAR (20) NOT NULL, RATING INT, PHONE_NUMBER INT, EMAIL_ADDRESS VARCHAR (20), START_LOCATION VARCHAR (20), PRIMARY KEY (DRIVER_ID));
+CREATE TABLE RIDER(RIDER_ID INT NOT NULL, FIRST_NAME VARCHAR (20) NOT NULL, LAST_NAME VARCHAR (20) NOT NULL, RATING INT, PHONE_NUMBER INT, EMAIL_ADDRESS VARCHAR (20), START_LOCATION VARCHAR (20));
+CREATE TABLE RIDE_TRANSACTION(TRANSACTION_ID INT NOT NULL, T_DATE DATE, T_TIME TIME, AMOUNT_PAID DECIMAL (18,2), START_LOCATION VARCHAR (20), END_LOCATION VARCHAR (20), RIDER_ID INT NOT NULL, DRIVER_ID INT NOT NULL,PRIMARY KEY (RIDER_ID,DRIVER_ID,TRANSACTION_ID), FOREIGN KEY (RIDER_ID) REFERENCES RIDER(RIDER_ID), FOREIGN KEY (DRIVER_ID) REFERENCES DRIVER(DRIVER_ID));
+CREATE TABLE TIME_SLOT(TIME_SLOT_ID INT NOT NULL, DAYS VARCHAR (20), START_TIME TIME, END_TIME TIME, PRIMARY KEY (TIME_SLOT_ID));
+CREATE TABLE CATEGORIES(CATEGORY VARCHAR (20) NOT NULL, PRICE_RATE DECIMAL (18,2), PRIMARY KEY (CATEGORY));
+CREATE TABLE SCHEDULE_RIDE(SCHEDULE_ID INT NOT NULL, S_DATE DATE, S_TIME TIME, START_LOCATION VARCHAR (20), RIDER_ID INT NOT NULL, DRIVER_ID INT NOT NULL, PRIMARY KEY (RIDER_ID, DRIVER_ID, SCHEDULE_ID), FOREIGN KEY (RIDER_ID) REFERENCES RIDER(RIDER_ID), FOREIGN KEY (DRIVER_ID) REFERENCES DRIVER(DRIVER_ID));
+CREATE TABLE FAVORITE_DESTINATION(DESTINATION_ID INT NOT NULL, END_LOCATION VARCHAR (20), PRIMARY KEY (DESTINATION_ID));
+CREATE TABLE DRIVER_CATEGORY(DRIVER_ID INT NOT NULL, CATEGORY VARCHAR (20) NOT NULL, PRIMARY KEY (DRIVER_ID, CATEGORY), FOREIGN KEY (DRIVER_ID) REFERENCES DRIVER(DRIVER_ID), FOREIGN KEY (CATEGORY) REFERENCES CATEGORIES(CATEGORY));
+CREATE TABLE DRIVER_TIME_SLOT(DRIVER_ID INT NOT NULL, TIME_SLOT_ID INT NOT NULL, PRIMARY KEY (DRIVER_ID, TIME_SLOT_ID), FOREIGN KEY (DRIVER_ID) REFERENCES DRIVER(DRIVER_ID), FOREIGN KEY (TIME_SLOT_ID) REFERENCES TIME_SLOT(TIME_SLOT_ID));
+CREATE TABLE RIDER_FAV_DESTINATION(RIDER_ID INT NOT NULL, DESTINATION_ID INT NOT NULL, PRIMARY KEY (RIDER_ID, DESTINATION_ID), FOREIGN KEY (RIDER_ID) REFERENCES RIDER(RIDER_ID), FOREIGN KEY (DESTINATION_ID) REFERENCES FAVORITE_DESTINATION(DESTINATION_ID));
