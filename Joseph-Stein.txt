@@ -460,6 +460,71 @@ RIDER_ID	FIRST_NAME	LAST_NAME	RATING	PHONE_NUMBER	EMAIL_ADDRESS	START_LOCATION
 10	Jimmy	N	5	1234560	j@yahoo.com	J Street	
 11	Joe	S	5	5555555	joe@website.com	L Street	
 
+Query 21:
+For each driver, get their time slot information along with their name and ID.
+
+SELECT driver.driver_ID, driver.first_name, driver.last_name, days, start_time, end_time FROM driver, driver_time_slot, time_slot WHERE driver.driver_ID = driver_time_slot.driver_ID AND time_slot.time_slot_ID = driver_time_slot.time_slot_ID;
+
+driver_ID	first_name	last_name	days	start_time	end_time	
+1	Joe	S	Week days	08:00:00	16:00:00	
+2	Bob	S	Week days	08:00:00	16:00:00	
+3	Mike	R	Weekends	09:00:00	17:00:00	
+4	Steve	L	Weekends	09:00:00	17:00:00	
+5	Lucy	Y	Weekends	10:00:00	18:00:00	
+6	Jon	T	Weekends	10:00:00	18:00:00	
+7	Susie	Q	Week days	11:00:00	19:00:00	
+8	Smith	W	Week days	11:00:00	19:00:00	
+9	Angie	A	Week days/weekends	12:00:00	20:00:00	
+10	Jimmy	S	Week days/weekends	12:00:00	20:00:00	
+
+Query 22:
+Show the favorite destinations of each rider.
+
+SELECT rider.rider_ID, rider.first_name, rider.last_name, end_location FROM rider, rider_fav_destination, favorite_destination WHERE rider.rider_ID = rider_fav_destination.rider_ID AND rider_fav_destination.destination_ID = favorite_destination.destination_ID;
+
+rider_ID	first_name	last_name	end_location	
+1	Bill	M	S Street	
+1	Bill	M	R Street	
+1	Bill	M	Q Street	
+2	Bart	S	S Street	
+2	Bart	S	W Street	
+4	Maggie	S	J Street	
+5	Sammy	E	J Street	
+6	Ty	Y	L Street	
+
+Query 23:
+Display the name of the driver and rider for each scheduled ride.
+
+SELECT rider.rider_ID, rider.first_name AS 'Rider Name', driver.driver_ID, driver.first_name AS 'Driver Name', s_date, s_time, schedule_ride.start_location FROM rider, schedule_ride, driver WHERE rider.rider_ID = schedule_ride.rider_ID AND driver.driver_ID = schedule_ride.driver_ID;
+
+rider_ID	Rider Name	driver_ID	Driver Name	s_date	s_time	start_location	
+1	Bill	2	Bob	2017-04-07	14:00:00	T Street	
+1	Bill	5	Lucy	2017-04-01	12:00:00	T Street	
+1	Bill	6	Jon	2017-04-01	18:00:00	M Street	
+2	Bart	7	Susie	2017-04-02	12:00:00	J Street	
+3	Sam	1	Joe	2017-04-03	12:00:00	Y Street	
+3	Sam	4	Steve	2017-04-10	13:00:00	G Street	
+3	Sam	5	Lucy	2017-04-13	19:00:00	F Street	
+5	Sammy	10	Jimmy	2017-04-04	16:00:00	F Street	
+5	Sammy	10	Jimmy	2017-04-09	20:00:00	H Street	
+6	Ty	6	Jon	2017-04-05	11:00:00	G Street	
+6	Ty	9	Angie	2017-04-09	20:00:00	H Street	
+7	Bert	7	Susie	2017-04-08	09:00:00	N Street	
+8	Lucile	1	Joe	2017-04-11	12:00:00	S Street	
+9	Greg	2	Bob	2017-04-12	09:00:00	1ST Street	
+9	Greg	4	Steve	2017-04-06	13:00:00	K Street	
+10	Jimmy	4	Steve	2017-04-06	17:00:00	I Street	
+
+Query 24:
+Show all of the drivers that are at the same location as the rider with an ID of 1.
+
+SELECT driver_ID, driver.first_name, driver.start_location FROM driver, rider WHERE rider.rider_ID = 1 AND rider.start_location = driver.start_location;
+
+driver_ID	first_name	start_location	
+1	Joe	L Street	
+2	Bob	L Street	
+
+
 Oiginal SQL specification:
 
 CREATE TABLE DRIVER(DRIVER_ID INT NOT NULL, FIRST_NAME VARCHAR (20) NOT NULL, LAST_NAME VARCHAR (20) NOT NULL, RATING INT, PHONE_NUMBER INT, EMAIL_ADDRESS VARCHAR (20), START_LOCATION VARCHAR (20), PRIMARY KEY (DRIVER_ID));
